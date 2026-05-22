@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.candidate_assessment.auth_service.grpc";
+option java_outer_classname = "AuthProto";
+
+service IdentityService {
+
+  rpc CreateIdentity(CreateIdentityRequest)
+      returns (CreateIdentityResponse);
+
+}
+
+message CreateIdentityRequest {
+
+  string email = 1;
+
+  string password = 2;
+
+  string displayName = 3;
+
+  repeated string roles = 4;
+}
+
+message CreateIdentityResponse {
+
+  int64 userId = 1;
+}

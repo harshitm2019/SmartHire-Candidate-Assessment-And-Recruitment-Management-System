@@ -1,0 +1,53 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: AUTH-SERVICE
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_db
+    username: postgres
+    password: postgres
+
+    jpa:
+      hibernate:
+        ddl-auto: validate
+
+    flyway:
+      enabled: true
+      baseline-on-migrate: true
+
+eureka:
+
+  instance:
+    prefer-ip-address: true
+
+  client:
+
+    register-with-eureka: true
+
+    fetch-registry: true
+
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+
+jwt:
+  secret-key: your-very-long-256-bit-secret-key-here
+  access-token-expiration: 1800000
+  issuer: candidate-assessment-auth-service
+
+jackson:
+  serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG

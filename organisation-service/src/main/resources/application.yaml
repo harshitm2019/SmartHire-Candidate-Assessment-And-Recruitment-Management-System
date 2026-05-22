@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: organisation-service
+
+
+grpc:
+  client:
+    auth-service:
+      address: discovery:///AUTH-SERVICE
+      negotiationType: plaintext

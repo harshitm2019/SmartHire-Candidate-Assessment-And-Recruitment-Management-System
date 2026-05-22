@@ -1,0 +1,219 @@
+server:
+  port: 8080
+
+spring:
+
+  application:
+    name: API-GATEWAY
+
+  redis:
+    host: localhost
+    port: 6379
+
+
+
+  cloud:
+
+    gateway:
+
+      httpclient:
+        connect-timeout: 3000
+        response-timeout: 5s
+
+      routes:
+
+        # =====================================
+        # AUTH SERVICE
+        # =====================================
+
+        - id: auth-service
+
+          uri: lb://AUTH-SERVICE
+
+          predicates:
+            - Path=/api/v1/auth/**
+
+          filters:
+
+            - name: CircuitBreaker
+              args:
+                name: authServiceCircuitBreaker
+                fallbackUri: forward:/fallback/auth-service
+
+            - name: Retry
+              args:
+                retries: 2
+                methods:
+                  - GET
+                statuses:
+                  - BAD_GATEWAY
+                  - GATEWAY_TIMEOUT
+                  - SERVICE_UNAVAILABLE
+                backoff:
+                  firstBackoff: 100ms
+                  maxBackoff: 500ms
+                  factor: 2
+                  basedOnPreviousValue: true
+
+        # =====================================
+        # ASSESSMENT SERVICE
+        # =====================================
+
+        - id: assessment-service
+
+          uri: lb://ASSESSMENT-SERVICE
+
+          predicates:
+            - Path=/api/v1/assessments/**
+
+          filters:
+
+            - name: CircuitBreaker
+              args:
+                name: assessmentServiceCircuitBreaker
+                fallbackUri: forward:/fallback/assessment-service
+
+            - name: Retry
+              args:
+                retries: 2
+                methods:
+                  - GET
+                statuses:
+                  - BAD_GATEWAY
+                  - GATEWAY_TIMEOUT
+                  - SERVICE_UNAVAILABLE
+                backoff:
+                  firstBackoff: 100ms
+                  maxBackoff: 500ms
+                  factor: 2
+                  basedOnPreviousValue: true
+
+        # =====================================
+        # APPLICATION SERVICE
+        # =====================================
+
+        - id: application-service
+
+          uri: lb://APPLICATION-SERVICE
+
+          predicates:
+            - Path=/api/v1/applications/**
+
+          filters:
+
+            - name: CircuitBreaker
+              args:
+                name: applicationServiceCircuitBreaker
+                fallbackUri: forward:/fallback/application-service
+              order: 1
+
+            - name: Retry
+              args:
+                retries: 2
+                methods:
+                  - GET
+                statuses:
+                  - BAD_GATEWAY
+                  - GATEWAY_TIMEOUT
+                  - SERVICE_UNAVAILABLE
+                backoff:
+                  firstBackoff: 100ms
+                  maxBackoff: 500ms
+                  factor: 2
+                  basedOnPreviousValue: true
+              order: 2
+
+eureka:
+
+  instance:
+    prefer-ip-address: true
+
+  client:
+    register-with-eureka: true
+
+    fetch-registry: true
+
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
+app:
+  security:
+    jwt-secret: your-very-long-256-bit-secret-key-here
+    public-paths:
+      - /api/v1/auth/**
+
+    role-mappings:
+      - path: /api/v1/assessments
+        methods:
+          GET: [ ASSESSMENT_VIEW ]
+          POST: [ ASSESSMENT_CREATE ]
+          PUT: [ ASSESSMENT_UPDATE ]
+          DELETE: [ ASSESSMENT_DELETE ]
+
+      - path: /api/v1/attempt
+        methods:
+          POST: [ ATTEMPT_START ]
+
+      - path: /api/v1/company
+        methods:
+
+          GET: [ COMPANY_ADMIN ]
+          POST: [ COMPANY_ADMIN ]
+          PUT: [ COMPANY_ADMIN ]
+          DELETE: [ COMPANY_ADMIN ]
+
+
+  rate-limit:
+
+    ip:
+      capacity: 4
+      refill-tokens: 4
+      refill-duration: 1
+
+    user:
+      capacity: 2
+      refill-tokens: 2
+      refill-duration: 1
+
+
+
+
+
+management:
+
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - gateway
+          - metrics
+          - circuitbreakers
+          - circuitbreakerevents
+
+  endpoint:
+    health:
+      show-details: always
+
+resilience4j:
+
+  circuitbreaker:
+
+    instances:
+
+      authServiceCircuitBreaker:
+
+        slidingWindowType: COUNT_BASED
+
+        slidingWindowSize: 2
+
+        minimumNumberOfCalls: 2
+
+        failureRateThreshold: 50
+
+        waitDurationInOpenState: 30s
