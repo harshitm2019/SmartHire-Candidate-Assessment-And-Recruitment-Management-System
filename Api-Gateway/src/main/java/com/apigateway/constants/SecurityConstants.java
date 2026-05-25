@@ -8,7 +8,8 @@ public class SecurityConstants {
     public static final String BEARER_PREFIX = "Bearer ";
 
     public static final String HEADER_USER_ID = "X-User-Id";
-    public static final String HEADER_ROLE = "X-Role";
+    public static final String HEADER_ROLES = "X-Roles";
+    public static final String HEADER_PERMISSIONS = "X-Permissions";
 
     public static final String USER_PREFIX = "USER_";
     public static final String IP_PREFIX = "IP_";

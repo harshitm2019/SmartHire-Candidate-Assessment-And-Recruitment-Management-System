@@ -2,7 +2,7 @@ package com.candidate_assessment.organisation_service.controller;
 
 import com.candidate_assessment.organisation_service.dto.CompanyRegistrationRequest;
 import com.candidate_assessment.organisation_service.dto.CompanyRegistrationResponse;
-import com.candidate_assessment.organisation_service.manager.CompanyOnboardingManager;
+import com.candidate_assessment.organisation_service.manager.company.CompanyOnboardingManager;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ public class OrganisationController {
             @Valid @RequestBody CompanyRegistrationRequest request
     ) {
 
-        CompanyRegistrationResponse response = companyOnboardingManager.registerCompany(request);
+        CompanyRegistrationResponse response = companyOnboardingManager.onboardCompany(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

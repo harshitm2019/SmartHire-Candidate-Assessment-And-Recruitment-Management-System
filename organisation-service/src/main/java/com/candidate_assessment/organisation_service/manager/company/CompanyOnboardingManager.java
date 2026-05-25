@@ -1,4 +1,4 @@
-package com.candidate_assessment.organisation_service.manager;
+package com.candidate_assessment.organisation_service.manager.company;
 
 import com.candidate_assessment.organisation_service.constants.ErrorMessages;
 import com.candidate_assessment.organisation_service.dto.CompanyRegistrationRequest;
@@ -21,11 +21,11 @@ public class CompanyOnboardingManager {
     private final CompanyIdentityStageHandler companyIdentityStageHandler;
     private final CompanyActivationStageHandler companyActivationStageHandler;
 
-    public CompanyRegistrationResponse registerCompany(CompanyRegistrationRequest request) {
+    public CompanyRegistrationResponse onboardCompany(CompanyRegistrationRequest request) {
 
-        String slug = generateSlug(request.getCompanyName());
+        String slug = generateSlug(request.companyName());
 
-        Optional<Company> existingCompany = companyService.findByEmail(request.getCompanyEmail());
+        Optional<Company> existingCompany = companyService.findByEmail(request.companyEmail());
 
         Company company = existingCompany.orElseGet(() -> {
 
@@ -59,9 +59,9 @@ public class CompanyOnboardingManager {
 
 
         Company company = Company.builder()
-                .name(request.getCompanyName())
+                .name(request.companyName())
                 .slug(slug)
-                .email(request.getCompanyEmail())
+                .email(request.companyEmail())
                 .status(CompanyStatus.PENDING)
                 .build();
 

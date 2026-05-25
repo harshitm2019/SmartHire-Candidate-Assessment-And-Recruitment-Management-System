@@ -4,6 +4,9 @@ public enum MembershipStatus {
 
     ACTIVE,
     INVITED,
-    DISABLED
+    DISABLED,
+    PENDING,
+    IDENTITY_CREATED,
+    SUSPENDED
 
 }

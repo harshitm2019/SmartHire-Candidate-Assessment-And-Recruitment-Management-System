@@ -1,4 +1,4 @@
-package com.candidate_assessment.organisation_service.manager;
+package com.candidate_assessment.organisation_service.manager.company;
 
 import com.candidate_assessment.organisation_service.dto.CompanyRegistrationRequest;
 import com.candidate_assessment.organisation_service.entity.Company;
@@ -12,8 +12,6 @@ import com.proto.auth.CreateIdentityResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor

@@ -7,19 +7,21 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Getter
-@Setter
 @Builder
-public class CompanyRegistrationResponse {
+public record CompanyRegistrationResponse(
 
-    private UUID companyId;
+         UUID companyId,
 
-    private Long adminUserId;
+         Long adminUserId,
 
-    private String companyName;
+         String companyName,
 
-    private String companySlug;
+         String companySlug,
 
-    private CompanyStatus status;
+         CompanyStatus status
+
+) {
+
+
 
 }

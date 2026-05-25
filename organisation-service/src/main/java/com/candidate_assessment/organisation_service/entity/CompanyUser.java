@@ -45,8 +45,11 @@ public class CompanyUser {
     )
     private Company company;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id")
     private Long userId;
+
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Enumerated(EnumType.STRING)
     @Column(

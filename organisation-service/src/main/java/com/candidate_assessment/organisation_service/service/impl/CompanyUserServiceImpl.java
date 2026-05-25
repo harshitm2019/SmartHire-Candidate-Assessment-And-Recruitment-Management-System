@@ -8,6 +8,7 @@ import com.candidate_assessment.organisation_service.service.CompanyUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -51,6 +52,20 @@ public class CompanyUserServiceImpl implements CompanyUserService {
     public boolean existsByCompanyIdAndUserId(UUID companyId, Long userId) {
 
         return  companyUserRepository.existsByCompany_IdAndUserId(companyId,userId);
+
+    }
+
+    @Override
+    public Optional<CompanyUser>  findByCompanyIdAndEmail(UUID companyId, String email) {
+
+           return companyUserRepository.findByCompany_IdAndEmail(companyId,email);
+
+    }
+
+    @Override
+    public CompanyUser updateCompany(CompanyUser companyUser) {
+
+        return companyUserRepository.save(companyUser);
 
     }
 }

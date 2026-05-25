@@ -23,4 +23,5 @@ public interface CompanyUserRepository extends JpaRepository<CompanyUser, UUID> 
 
     Optional<CompanyUser> findByUserId(Long userId);
 
+    Optional<CompanyUser> findByCompany_IdAndEmail(UUID companyId, String email);
 }

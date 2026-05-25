@@ -18,5 +18,7 @@ public class ErrorMessages {
 
     public static final String RECRUITER_PROFILE_NOT_FOUND = "Recruiter profile not found";
 
+    public static final String RECRUITER_EMAIL_ALREADY_EXISTS = "Recruiter Email already exists";
+
 
 }

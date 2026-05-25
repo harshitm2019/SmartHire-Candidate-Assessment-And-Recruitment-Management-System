@@ -1,21 +1,21 @@
 package com.candidate_assessment.organisation_service.dto;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-public class CompanyRegistrationRequest {
 
-    private String companyName;
+public record CompanyRegistrationRequest (
 
-    private String companyEmail;
+         String companyName,
+         String companyEmail,
+         String adminEmail,
+         String adminPassword,
+         String adminDisplayName
 
-    private String adminEmail;
+){
 
-    private String adminPassword;
 
-    private String adminDisplayName;
 
 }
